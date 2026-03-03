@@ -27,9 +27,9 @@ jobs:
           chmod +x cosign-linux-amd64
           sudo mv cosign-linux-amd64 /usr/local/bin/cosign
 
-      - name: Compile Cosign
-        run: |
-          go build ./...
+      # - name: Compile Cosign
+      #   run: |
+      #     go build ./...
 
       - name: Check Cosign version
         run: |
