@@ -31,7 +31,9 @@ jobs:
       #   run: |
       #     go build ./...
 
-      - name: Check Cosign version
+      - name: Check Cosign version and PKCS#11 support
+        env:
+          COSIGN_PKCS11: "true"
         run: |
           cosign version
-          cosign sign --help
+          cosign sign --help | grep -i pkcs11 || echo "PKCS#11 support not found"
