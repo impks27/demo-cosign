@@ -31,7 +31,7 @@ jobs:
         run: |
           git clone https://github.com/sigstore/cosign.git
           cd cosign
-          go build -o cosign ./cmd/cosign
+          go build -tags=pkcs11key -o cosign ./cmd/cosign
           sudo mv cosign /usr/local/bin/cosign
 
       - name: Check Cosign version and PKCS#11 support
