@@ -16,38 +16,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.21'
-
-      # - name: Install Cosign (official binary)
-      #   run: |
-      #     wget https://github.com/sigstore/cosign/releases/latest/download/cosign-linux-amd64
-      #     chmod +x cosign-linux-amd64
-      #     sudo mv cosign-linux-amd64 /usr/local/bin/cosign
-
-      # - name: Compile Cosign (from source, with PKCS#11 support)
-      #   run: |
-      #     git clone https://github.com/sigstore/cosign.git
-      #     cd cosign
-      #     go build -tags=pkcs11key -o cosign ./cmd/cosign
-      #     sudo mv cosign /usr/local/bin/cosign
-
-      # - name: Check Cosign version and PKCS#11 support
-      #   env:
-      #     COSIGN_PKCS11: "true"
-      #   run: |
-      #     cosign version
-      #     cosign sign --help | grep -i pkcs11 || echo "PKCS#11 support not found"
+      - name: Install PCSC Lite library (for PKCS#11)
+        run: sudo apt-get update && sudo apt-get install -y libpcsclite1
 
       - name: Download Cosign with PKCS#11 support
         run: |
-          # For Linux AMD64
           wget -O cosign https://github.com/sigstore/cosign/releases/download/v2.2.4/cosign-linux-pivkey-pkcs11key-amd64
           chmod +x cosign
           sudo mv cosign /usr/local/bin/cosign
-          
-          # Verify
+
+      - name: Verify Cosign version and PKCS#11 support
+        run: |
           cosign version
-          cosign pkcs11-tool --help | head -3      
+          cosign pkcs11-tool --help | head -3
